@@ -58,7 +58,7 @@ height: 40px;
 	width: 100%;
 	z-index: 10000;
 	outline: 1px solid #000;
-	bottom: 0;
+	bottom: -80px;
 }
 .clearfix,
 .clearfix:before,
@@ -213,19 +213,19 @@ span{
 	box-shadow: 0 0 6px #00acee;
 }
 
-.comment-box ,.comment-box + input{
+.comment-box ,.comment-box + button{
 	display: table-cell;
 	float: left;
 	vertical-align: middle;
 }
 
-.comment-box + input{
+.comment-box + button{
 	padding: 5px 10px;
 	margin-left: 50px;
 }
 
 @media screen and (max-width: 768px){
-	#submit{
+	#vitua_submit{
 		width: 100%;
 		margin: 0;
 	}
