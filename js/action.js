@@ -99,6 +99,7 @@ function addListen(obj,type,handle){
    for(var i = 0, len = comments.length; i < len ; i++){
        console.log(comments[i]);
       comments[i].addEventListener('click',toggle(),false);
+      comments[i].addEventListener('click',toggle().false);
    }
 
  function toggle(){
