@@ -99,12 +99,13 @@ function addListen(obj,type,handle){
    for(var i = 0, len = comments.length; i < len ; i++){
        console.log(comments[i]);
       comments[i].addEventListener('click',toggle(),false);
-      comments[i].addEventListener('click',toggle().false);
+      comments[i].addEventListener('ontouchstart',toggle(),false);
    }
+
+
 
  function toggle(){
      return function(){
-         console.log('123');
          $$('comment-box').style.bottom = window.getComputedStyle($$('comment-box')).getPropertyCSSValue('bottom');
          if( $$('comment-box').style.bottom === '-80px'){
              $$('comment-box').style.bottom = "0px";

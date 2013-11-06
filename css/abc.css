@@ -59,7 +59,7 @@ h2{
 }
 
 .allpag{
-	min-height: 1280px;
+	min-height: 600px;
 /**/
 	margin-left: auto;
 	margin-right: auto;
@@ -290,4 +290,20 @@ li{
 span{
 	display: inline !important;
 	word-wrap:break-word;
+}
+
+
+.swipe {
+  overflow: hidden;
+  visibility: hidden;
+  position: relative;
+}
+.swipe-wrap {
+  overflow: hidden;
+  position: relative;
+}
+.swipe-wrap > div {
+  float:left;
+  width:100%;
+  position: relative;
 }
