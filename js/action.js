@@ -24,6 +24,7 @@ var addClass = function addClass(element,value){
 	if(!element.className){
 		element.className = value;
 	}
+	if(element.className.indexOf(value) > 0) return;
 	else{
 		newClassName = element.className;
 		newClassName += " ";
@@ -31,6 +32,18 @@ var addClass = function addClass(element,value){
 		element.className = newClassName;
 	}
 };
+
+var removeClass = function removeClass(element,value){
+	if(!element.className) return false;
+	if(element.className.indexOf(value) < 0) return false;
+	else{
+		oldClassName = element.className;
+		oldPart1 = oldClassName.substring(0,oldClassName.indexOf(value));
+		oldPart2 = oldClassName.substring(oldClassName.indexOf(value) + value.length, oldClassName.length);
+		newClassName = oldPart1 + oldPart2;
+		element.className =  newClassName;
+	}
+}
 
 var curry = function curry(fn,scrope){
 	var scrope = scrope || window;
@@ -94,33 +107,61 @@ function addListen(obj,type,handle){
 	}
 }
 
-//显示出评论框
-   var comments = getClass('click-comment');
-   for(var i = 0, len = comments.length; i < len ; i++){
-       console.log(comments[i]);
-      comments[i].addEventListener('click',toggle(),false);
-      comments[i].addEventListener('ontouchstart',toggle(),false);
-   }
 
 
 
- function toggle(){
-     return function(){
-         $$('comment-box').style.bottom = window.getComputedStyle($$('comment-box')).getPropertyCSSValue('bottom');
-         if( $$('comment-box').style.bottom === '-80px'){
-             $$('comment-box').style.bottom = "0px";
-         }
-         else{
-             $$('comment-box').style.bottom = "-80px";
-         }
-     }
+// // 动态topbar
+// function getScroll(){
+// 	return function(){
+// 		var topbar = document.getElementsByClassName('header-bar')[0];
+// 		var swipe = document.getElementById('slider');
+// 		// console.log(swipe)
+// 		// console.log(document.body.scrollTop);	
+// 		if(document.body.scrollTop > 0 ){
+// 			topbar.style.position = "fixed";
+// 			topbar.style.top = "0px";
+// 			if(parseInt(window.getComputedStyle(topbar).height) - document.body.scrollTop > 0){
+// 				console.log(parseInt(window.getComputedStyle(topbar).height) - document.body.scrollTop);
+// 				swipe.style.marginTop = (parseInt(window.getComputedStyle(topbar).height) - document.body.scrollTop) + 'px';
+// 			} 
+			
+// 		}
+// 		else{
+// 			topbar.style.position = 'static';
+// 			swipe.style.marginTop = 0;
+// 		}
+// 	}
+// }
+// window.addEventListener('scroll',getScroll(),false);
 
- }
+
+// 点赞
+var click_praise = getClass('click_praise');
+for(var i = 0, len = click_praise.length; i< len ;  i += 1 ){
+	click_praise[i].addEventListener('click',praise(),false);
+}
 
 
+function praise(){
+	return function(){
 
+	}
+}
 
+// 滚动条
 
+function changeSlider(index,elem){
+	var slider = document.getElementsByClassName('slider')[0];
+	var sliderWidth = window.getComputedStyle(slider).width;
+	console.log(sliderWidth);
+    slider.style.left = (parseInt(sliderWidth) * index)  + 'px';
+}
+
+// 修改高度
+function changeHeight(index,elem){
+	var elemHeight = parseInt(window.getComputedStyle(elem).height);
+	getClass('swipe-wrap')[0].style.height = elemHeight + 'px';
+}
 
 
 
