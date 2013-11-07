@@ -118,15 +118,7 @@ function addListen(obj,type,handle){
  }
 
 
-//登陆框表单验证
-$$('vitua_submit').addEventListener('click',function(){
-    var commentText = $$('comment-message').value;
-    console.log(commentText);
-//     $$('submit').click();
 
-    $$('comment-box').style.bottom = "-80px";
-    $$('comment-message').value = "";
-})
 
 
 
