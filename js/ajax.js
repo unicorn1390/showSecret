@@ -48,7 +48,6 @@ function encodeFormData(data){
 }
 // POST请求数据
 function postdata(url,data,callback){
-    return function(){
         var request = new XMLHttpRequest();
         request.open('POST',url,true);
         request.addEventListener('readystatechange',function(){
@@ -57,8 +56,7 @@ function postdata(url,data,callback){
             }
         },false);
         request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-        request.send(encodeFormData(data));
-    }      
+        request.send(encodeFormData(data));     
 }
 
 // GET请求数据
@@ -105,8 +103,31 @@ function timeGetText(url,timeout,callback){
     request.send(null);
 }
 
+function getReply(reply){ //ajax发送请求的回复
+    if(!reply || reply === 0){
+        self.postMessage('failed');
+    }
+    else if(reply === 1){
+        self.postMessage('success');
+    }
+}
 
+function dealData(){
+    return function(e){
+        var type = e.data.type;
+        if(typeof type !== "string") return false;
+        switch(type){
+            case "GET":
+                getdata(URL,data,getReply);  //get 发送请求
+                break;
+            case "POST":
+                postdata(URL,data,getReply); // post发送请求
+        }
+
+    }
+}
 // worker 对象方法
 
+self.addEventListener('message',dealData(),false);
 
-self.addEventListener('message',postdata(),false);
+

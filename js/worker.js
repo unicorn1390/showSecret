@@ -9,12 +9,18 @@
 var worker = new Worker('ajax.js');
 worker.addEventListener('message',getResponse(),false);
 
-function sendAjax(data,callback){
-		worker.postMessage(data);//发送json对象到work
+function sendAjax(data,type,callback){
+	data[type] = type;
+	worker.postMessage(data);//发送json对象到work
 }
 
 function getResponse(){
 	return function(e){
-		console.log(e.data);
+		if(e.data === 'failed'){
+			alert('发送失败。= = 。。');
+		}
+		else if(e.data === "success"){
+			alert('发送成功！ Yeah~~');
+		}
 	}
 }
