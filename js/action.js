@@ -176,7 +176,8 @@ function changeHeight(index,elem){
 }
 
 function addListenToContent(){
-	var click_praise = getClass('click-praise');
+	var click_praise = getClass('click_praise');
+	console.log(click_praise);
 	for(var i = 0,len = click_praise.length; i < len ; i += 1){
 		click_praise[i].addEventListener('click',getPrased(click_praise[i]),false);
 	}
@@ -187,14 +188,16 @@ function getOpenId(){
 }
 
 function getPrased(elem){  //点赞
-	var articleId = elem.getAttribute('articleId');
-	var openid = getOpenId();
-	var data = {
-		user_openid : openid,
-		sec_id: articleId
-	};
-	sendAjax(data,"POST"); //发送数据到worker
-	// ..................
+	return function(){
+		var articleId = elem.getAttribute('articleId');
+		var openid = getOpenId();
+		var data = {
+			user_openid : openid,
+			sec_id: articleId
+		};
+		sendAjax(data,"POST"); //发送数据到worker
+		// ..................
+	}
 }
 
 
@@ -233,7 +236,7 @@ function step1(){
 }
 
 whenReady(step1); //队列第一步
-
+whenReady(addListenToContent);
 
 
 

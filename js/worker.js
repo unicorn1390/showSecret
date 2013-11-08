@@ -5,12 +5,12 @@
  * Time: 9:20 PM
  * To change this template use File | Settings | File Templates.
  */
-
-var worker = new Worker('ajax.js');
+var worker = new Worker('js/ajax.js');
 worker.addEventListener('message',getResponse(),false);
 
 function sendAjax(data,type,callback){
-	data[type] = type;
+	data.type = type;
+	console.log(data);
 	worker.postMessage(data);//发送json对象到work
 }
 

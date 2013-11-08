@@ -52,7 +52,7 @@ function postdata(url,data,callback){
         request.open('POST',url,true);
         request.addEventListener('readystatechange',function(){
             if(request.readyState === 4 && callback){
-                  callback(request);
+                  callback(JSON.parse(request.responseText));
             }
         },false);
         request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
@@ -115,13 +115,15 @@ function getReply(reply){ //ajax发送请求的回复
 function dealData(){
     return function(e){
         var type = e.data.type;
+        // throw JSON.stringify({data:type})
         if(typeof type !== "string") return false;
         switch(type){
             case "GET":
-                getdata(URL,data,getReply);  //get 发送请求
+                getdata("../text.php",e.data,getReply);  //get 发送请求  注意！！！ 这里的路径是以ajax.js的目录为准
                 break;
             case "POST":
-                postdata(URL,data,getReply); // post发送请求
+                postdata("../text.php",e.data,getReply); // post发送请求 注意！！！这里的路径是以ajax.js的目录为准
+                break;
         }
 
     }

@@ -1,17 +1,17 @@
 <!doctype html>
-<html manifest="cache.appcache" lang="en">
+<html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<title>ShowSecret</title>
 	<meta name="viewport" content="width=device-width, maximum-scale=1.0, minimum-scale =0.5" />
-	<link rel="stylesheet" href="CSS/abc.css">
+	<link rel="stylesheet" href="css/abc.css">
 </head>
 <body>
 <div class="header-bar">
 	<div class="top-fixed-inner">
 		<div class="top-fixed-container">
 				<div class="top-bar clearfix">
-					<div style="display:none;" openId="123456"></div> <!--     当前用户的openid           -->
+					<div style="display:none;" id="userId" openId="123456"></div> <!--     当前用户的openid           -->
 					<div class="top-logo">
 						<img src="IMAGE/logo.png" />
 					</div>
@@ -214,8 +214,8 @@
  <button id="left">left</button>
 	 <button id="right">right</button>
 </body>
-<script type="text/javascript" src="JS/slider.js"></script>
-<script type="text/javascript" src="JS/action.js"></script>
+<script type="text/javascript" src="js/slider.js"></script>
+<script type="text/javascript" src="js/action.js"></script>
 <script type="text/javascript" src="js/worker.js"></script>
 <script type="text/javascript">
 
