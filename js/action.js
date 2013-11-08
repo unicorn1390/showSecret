@@ -118,7 +118,7 @@ function writeCookie(name,value,days){
 	//Specifying a number of days makes the cookie persistent
 	if(days){
 		var date = new Date();
-		date.setTime(date.getTime() + day * 24 * 60 * 60 * 1000);
+		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
 		expires = '; expries=' + date.toGMTString();
 	}
 
@@ -133,7 +133,7 @@ function readCookie(name){
 	for(var i =0; i< cookie.length; i++){
 		var c = cookie[i];
 		while(c.charAt(0) == " ") c = c.substring(1,c.length);
-		if(c,indexOf(searchName) == 0) return c.substring(searchName.length,c.length);
+		if(c.indexOf(searchName) == 0) return c.substring(searchName.length,c.length);
 	}
 	return null;
 };
@@ -155,11 +155,7 @@ function addListen(obj,type,handle){
 }
 
 
-function praise(){
-	return function(){
 
-	}
-}
 
 // 滚动条
 function changeSlider(index,elem){
@@ -177,7 +173,6 @@ function changeHeight(index,elem){
 
 function addListenToContent(){
 	var click_praise = getClass('click_praise');
-	console.log(click_praise);
 	for(var i = 0,len = click_praise.length; i < len ; i += 1){
 		click_praise[i].addEventListener('click',getPrased(click_praise[i]),false);
 	}
@@ -185,6 +180,16 @@ function addListenToContent(){
 
 function getOpenId(){
 	return document.getElementById('userId').getAttribute('openid');
+}
+
+function findPraise(){
+	var allContent = getClass('click_praise');
+	console.log(allContent);
+	for(var i = 0,len = allContent.length; i < len ;i += 1){
+		if(parseInt(allContent[i].getAttribute('ispraied')) == 0){
+			allContent[i].innerHTML = "已赞";
+		}
+	}
 }
 
 function getPrased(elem){  //点赞
@@ -195,11 +200,28 @@ function getPrased(elem){  //点赞
 			user_openid : openid,
 			sec_id: articleId
 		};
-		sendAjax(data,"POST"); //发送数据到worker
+		if(sendAjax(data,"POST")){
+			console.log(elem);
+			// writeCookie('PRASECHECK',articleId ,365);
+			elem.innerHTML = "已赞";
+		} //发送数据到worker
+		
 		// ..................
 	}
 }
-
+// function checkpraise(){
+// 	var click_praise = getClass('click_praise');
+// 	var isPrase = readCookie("PRASECHECK");
+// 	if(isPrase){
+// 		console.log(isPrase);
+// 		var articleId = isPrase.split('=')[1];
+// 		for(var i = 0,len = click_praise.length; i < len ; i += 1){
+// 			if(click_praise[i].getAttribute('articleId') === articleId){
+// 				click_praise[i].innerHTML = "已赞";
+// 		}
+// 	}
+// 	}
+// }
 
 // // 动态topbar
 // function getScroll(){
@@ -228,14 +250,15 @@ function getPrased(elem){  //点赞
 
 // 点赞
 // 事件队列1
-function step1(){
-	var click_praise = getClass('click_praise');
-	for(var i = 0, len = click_praise.length; i< len ;  i += 1 ){
-		click_praise[i].addEventListener('click',praise(),false);
-	}
-}
+// function step1(){
+// 	var click_praise = getClass('click_praise');
+// 	for(var i = 0, len = click_praise.length; i< len ;  i += 1 ){
+// 		click_praise[i].addEventListener('click',praise(),false);
+// 	}
+// }
 
-whenReady(step1); //队列第一步
+// whenReady(step1); //队列第一步
+whenReady(findPraise);
 whenReady(addListenToContent);
 
 
