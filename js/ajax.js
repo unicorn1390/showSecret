@@ -10,6 +10,8 @@
 this function send the get HTTP request ,
 return  XML object or JSON object or string text
 */
+
+// GET获取数据
 function get(url,callback){
     var request = new XMLHttpRequest();
     request.open("GET",url);
@@ -30,7 +32,7 @@ function get(url,callback){
     },false);
 }
 
-
+// 格式转码
 function encodeFormData(data){
     if(!data) return "";
     var pairs = [];
@@ -44,19 +46,22 @@ function encodeFormData(data){
     }
     return pairs.join('&');
 }
-
+// POST请求数据
 function postdata(url,data,callback){
-    var request = new XMLHttpRequest();
-    request.open('POST',url,true);
-    request.addEventListener('readystatechange',function(){
-        if(request.readyState === 4 && callback){
-              callback(request);
-        }
-    },false);
-    request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-    request.send(encodeFormData(data));
+    return function(){
+        var request = new XMLHttpRequest();
+        request.open('POST',url,true);
+        request.addEventListener('readystatechange',function(){
+            if(request.readyState === 4 && callback){
+                  callback(request);
+            }
+        },false);
+        request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+        request.send(encodeFormData(data));
+    }      
 }
 
+// GET请求数据
 function getdata(url,data,callback){
     var request = new XMLHttpRequest();
     request.open('GET',url + "?" + encodeFormData(data));
@@ -78,45 +83,7 @@ function sendJSON(url,data,callback){
     request.send(encodeFormData(data));
 }
 
-var whenReady = (function(){
-    var func = [];
-    var ready = false;
-
-    function hander(e){
-        if(ready) return ;
-
-        if(e.type == 'readystatechange' && document.readyState !== 'complete'){
-            return ;
-        }
-
-        for(var i=0; i< func.length; i++){
-            func[i].call(document);
-        }
-
-
-        ready = true;
-        func = null;
-    }
-
-    if(document.addEventListener){
-        document.addEventListener('DOMContentLoaded',hander,false);
-        document.addEventListener('readystatechange',hander,false);
-        window.addEventListener('load',hander,false);
-    }
-
-    else if(document.attachEvent){
-        document.attachEvent('onreadystatechange',hander,false);
-        window.attachEvent('onload',hander);
-    }
-
-
-    return function whenReady(f){
-         if(ready) f.call(document);
-         else func.push(f);
-    }
-})();
-
-
+// 定循环GET数据
 function timeGetText(url,timeout,callback){
     var request = new XMLHttpRequest();
     var timedout = false;
@@ -137,3 +104,9 @@ function timeGetText(url,timeout,callback){
     },false);
     request.send(null);
 }
+
+
+// worker 对象方法
+
+
+self.addEventListener('message',postdata(),false);

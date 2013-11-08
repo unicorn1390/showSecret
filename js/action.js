@@ -1,13 +1,60 @@
+/**
+ * Created with JetBrains WebStorm.
+ * User: andycall
+ * Date: 7/11/13
+ * Time: 10:12 PM
+ * To change this template use File | Settings | File Templates.
+ */
+
 
 
 function $$(id){
 		return typeof id === 'string' ? document.getElementById(id) : id;
 }
 
+var whenReady = (function(){
+    var func = [];
+    var ready = false;
+
+    function hander(e){
+        if(ready) return ;
+
+        if(e.type == 'readystatechange' && document.readyState !== 'complete'){
+            return ;
+        }
+
+        for(var i=0; i< func.length; i++){
+            func[i].call(document);
+        }
+
+
+        ready = true;
+        func = null;
+    }
+
+    if(document.addEventListener){
+        document.addEventListener('DOMContentLoaded',hander,false);
+        document.addEventListener('readystatechange',hander,false);
+        window.addEventListener('load',hander,false);
+    }
+
+    else if(document.attachEvent){
+        document.attachEvent('onreadystatechange',hander,false);
+        window.attachEvent('onload',hander);
+    }
+
+
+    return function whenReady(f){
+         if(ready) f.call(document);
+         else func.push(f);
+    }
+})();
+
+
 function getClass(classname){
     return Array.prototype.slice.call(document.getElementsByClassName(classname),0);
 }
-var addLoadEvent = function addLoadEvent(func){
+function addLoadEvent(func){
 	var oldonload = window.onload;
 	if(typeof window.onload != 'function'){
 		window.onload = func;
@@ -20,7 +67,7 @@ var addLoadEvent = function addLoadEvent(func){
 	}
 };
 
-var addClass = function addClass(element,value){
+function addClass(element,value){
 	if(!element.className){
 		element.className = value;
 	}
@@ -33,7 +80,7 @@ var addClass = function addClass(element,value){
 	}
 };
 
-var removeClass = function removeClass(element,value){
+function removeClass(element,value){
 	if(!element.className) return false;
 	if(element.className.indexOf(value) < 0) return false;
 	else{
@@ -45,7 +92,7 @@ var removeClass = function removeClass(element,value){
 	}
 }
 
-var curry = function curry(fn,scrope){
+function curry(fn,scrope){
 	var scrope = scrope || window;
 	var args = [];
 	for(var i= 2; i< arguments.length; i ++){
@@ -64,7 +111,7 @@ var curry = function curry(fn,scrope){
 };
 
 
-var writeCookie = function writeCookie(name,value,days){
+function writeCookie(name,value,days){
 	//By default ,there is no expiration so the cookie is temporary
 	var expires = "";
 
@@ -79,7 +126,7 @@ var writeCookie = function writeCookie(name,value,days){
 	document.cookie = name + '=' + value + expires + '; path=/';
 };
 
-var readCookie = function readCookie(name){
+function readCookie(name){
 	//find the specified cookie and return its value
 	var searchName = name + '=';
 	var cookie = document.cookie.split(';');
@@ -91,7 +138,7 @@ var readCookie = function readCookie(name){
 	return null;
 };
 
-var eraseCookie =  function eraseCookie(name){
+function eraseCookie(name){
 	writeCookie(name,"",-12);
 };
 
@@ -105,6 +152,27 @@ function addListen(obj,type,handle){
 	else{
 		obj['on' + type] = handle;
 	}
+}
+
+
+function praise(){
+	return function(){
+
+	}
+}
+
+// 滚动条
+function changeSlider(index,elem){
+	var slider = document.getElementsByClassName('slider')[0];
+	var sliderWidth = window.getComputedStyle(slider).width;
+	console.log(sliderWidth);
+    slider.style.left = (parseInt(sliderWidth) * index)  + 'px';
+}
+
+// 修改高度
+function changeHeight(index,elem){
+	var elemHeight = parseInt(window.getComputedStyle(elem).height);
+	getClass('swipe-wrap')[0].style.height = elemHeight + 'px';
 }
 
 
@@ -136,32 +204,16 @@ function addListen(obj,type,handle){
 
 
 // 点赞
-var click_praise = getClass('click_praise');
-for(var i = 0, len = click_praise.length; i< len ;  i += 1 ){
-	click_praise[i].addEventListener('click',praise(),false);
-}
-
-
-function praise(){
-	return function(){
-
+// 事件队列1
+function step1(){
+	var click_praise = getClass('click_praise');
+	for(var i = 0, len = click_praise.length; i< len ;  i += 1 ){
+		click_praise[i].addEventListener('click',praise(),false);
 	}
 }
 
-// 滚动条
+whenReady(step1); //队列第一步
 
-function changeSlider(index,elem){
-	var slider = document.getElementsByClassName('slider')[0];
-	var sliderWidth = window.getComputedStyle(slider).width;
-	console.log(sliderWidth);
-    slider.style.left = (parseInt(sliderWidth) * index)  + 'px';
-}
-
-// 修改高度
-function changeHeight(index,elem){
-	var elemHeight = parseInt(window.getComputedStyle(elem).height);
-	getClass('swipe-wrap')[0].style.height = elemHeight + 'px';
-}
 
 
 
